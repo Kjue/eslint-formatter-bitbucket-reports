@@ -97,7 +97,7 @@ async function createReport(reportId, report) {
     });
 }
 
-async function createAnnotations(reportId, annotations, annotationId) {
+async function createAnnotations(reportId, annotations) {
     const chunk = annotations.slice(0, MAX_ANNOTATIONS_PER_REQUEST);
     const response = await httpClient.post(`2.0/repositories/${BITBUCKET_WORKSPACE}/${BITBUCKET_REPO_SLUG}/commit/${BITBUCKET_COMMIT}/reports/${reportId}/annotations`, {
         json: chunk,
@@ -111,7 +111,6 @@ async function createAnnotations(reportId, annotations, annotationId) {
 
 async function processResults(results) {
     const reportId = `eslint-${BITBUCKET_COMMIT}`;
-    const annotationId = `annotation-${BITBUCKET_COMMIT}`;
     const report = generateReport(results);
     const annotations = generateAnnotations(results, reportId);
 
@@ -120,7 +119,7 @@ async function processResults(results) {
         console.log('Previous report deleted');
         await createReport(reportId, report);
         console.log('New report created');
-        await createAnnotations(reportId, annotations, annotationId);
+        await createAnnotations(reportId, annotations);
         console.log('Annotations added');
     } catch (error) {
         if (error.request) {
