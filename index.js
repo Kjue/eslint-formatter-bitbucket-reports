@@ -15,7 +15,7 @@ const httpClientConfig = BITBUCKET_API_AUTH ? {
         'Authorization': BITBUCKET_API_AUTH
     }
 } : {
-    prefixUrl: `http://localhost:29418`,
+    prefixUrl: `http://host.docker.internal:29418`,
     responseType: 'json',
     headers: {
         'Host': 'api.bitbucket.org'
