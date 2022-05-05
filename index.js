@@ -79,7 +79,8 @@ function generateAnnotations(results, reportId) {
                 summary: `${message} (${ruleId})`,
                 annotation_type: 'BUG',
                 severity: SEVERITIES[severity],
-                result: RESULTS[severity]
+                result: RESULTS[severity],
+                link: `https://eslint.org/docs/rules/${ruleId}`
             };
         })];
     }, []);
