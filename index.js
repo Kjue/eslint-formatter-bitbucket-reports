@@ -35,6 +35,10 @@ const SEVERITIES = {
     1: 'MEDIUM',
     2: 'HIGH'
 };
+const RESULTS = {
+    1: 'IGNORED',
+    2: 'FAILED'
+};
 
 function generateReport(results) {
     const summary = results.reduce(
@@ -74,7 +78,8 @@ function generateAnnotations(results, reportId) {
                 path: relativePath,
                 summary: `${message} (${ruleId})`,
                 annotation_type: 'BUG',
-                severity: SEVERITIES[severity]
+                severity: SEVERITIES[severity],
+                result: RESULTS[severity]
             };
         })];
     }, []);
