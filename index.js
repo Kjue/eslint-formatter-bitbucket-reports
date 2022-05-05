@@ -92,7 +92,7 @@ async function createReport(reportId, report) {
 
 async function createAnnotations(reportId, annotations, annotationId) {
     const chunk = annotations.slice(0, MAX_ANNOTATIONS_PER_REQUEST);
-    const response = await httpClient.post(`2.0/repositories/${BITBUCKET_WORKSPACE}/${BITBUCKET_REPO_SLUG}/commit/${BITBUCKET_COMMIT}/reports/${reportId}/annotations/${annotationId}`, {
+    const response = await httpClient.put(`2.0/repositories/${BITBUCKET_WORKSPACE}/${BITBUCKET_REPO_SLUG}/commit/${BITBUCKET_COMMIT}/reports/${reportId}/annotations/${annotationId}`, {
         json: chunk,
         responseType: 'json'
     });
