@@ -106,14 +106,14 @@ async function processResults(results) {
     const reportId = `eslint-${BITBUCKET_COMMIT}`;
     const annotationId = `annotation-${BITBUCKET_COMMIT}`;
     const report = generateReport(results);
-    const annotations = generateAnnotations(results, reportId, annotationId);
+    const annotations = generateAnnotations(results, reportId);
 
     try {
         await deleteReport(reportId);
         console.log('Previous report deleted');
         await createReport(reportId, report);
         console.log('New report created');
-        await createAnnotations(reportId, annotations);
+        await createAnnotations(reportId, annotations, annotationId);
         console.log('Annotations added');
     } catch (error) {
         if (error.request) {
