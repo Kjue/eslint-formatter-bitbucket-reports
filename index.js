@@ -70,6 +70,7 @@ function generateAnnotations(results, reportId) {
             return {
                 external_id,
                 line,
+                title: `ESLint: ${ruleId}`,
                 path: relativePath,
                 summary: `${message} (${ruleId})`,
                 annotation_type: 'BUG',
@@ -92,7 +93,7 @@ async function createReport(reportId, report) {
 
 async function createAnnotations(reportId, annotations, annotationId) {
     const chunk = annotations.slice(0, MAX_ANNOTATIONS_PER_REQUEST);
-    const response = await httpClient.put(`2.0/repositories/${BITBUCKET_WORKSPACE}/${BITBUCKET_REPO_SLUG}/commit/${BITBUCKET_COMMIT}/reports/${reportId}/annotations/${annotationId}`, {
+    const response = await httpClient.post(`2.0/repositories/${BITBUCKET_WORKSPACE}/${BITBUCKET_REPO_SLUG}/commit/${BITBUCKET_COMMIT}/reports/${reportId}/annotations`, {
         json: chunk,
         responseType: 'json'
     });
