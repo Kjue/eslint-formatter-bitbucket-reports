@@ -123,13 +123,8 @@ async function processResults(results) {
         await createAnnotations(reportId, annotations);
         console.log('Annotations added');
     } catch (error) {
-        if (error.request) {
-            console.log(error.request.options);
-        }
         if (error.response) {
-            console.error(error.message, error.response.body)
-        } else {
-            console.error(error);
+            console.error(error.message, error.response.body.message)
         }
     }
 }
