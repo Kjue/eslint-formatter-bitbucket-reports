@@ -1,6 +1,7 @@
 const path = require('path');
-const stylish = require('eslint/lib/cli-engine/formatters/stylish.js');
 const got = require('got');
+
+let stylish
 
 const { BITBUCKET_WORKSPACE, BITBUCKET_REPO_SLUG, BITBUCKET_COMMIT, BITBUCKET_API_AUTH } = process.env;
 
@@ -49,10 +50,10 @@ function generateReport(results) {
         },
         { errorCount: 0, warningCount: 0 }
     );
-    
+
     const { errorCount, warningCount } = summary;
     const problemCount = errorCount + warningCount;
-    
+
     const details = `${problemCount} problem${problemCount !== 1 ? 's' : ''} (${errorCount} error${errorCount !== 1 ? 's' : ''}, ${warningCount} warning${warningCount !== 1 ? 's' : ''})`;
     const result = errorCount > 0 ? 'FAILED' : 'PASSED';
 
@@ -133,7 +134,18 @@ async function processResults(results) {
     }
 }
 
-module.exports = function(results) {
-    processResults(results);
-    return stylish(results);
+module.exports = async function (results) {
+    try {
+        // ESLint 7
+        stylish = require('eslint/lib/cli-engine/formatters/stylish');
+    } catch (error) {
+        // ESLint 8
+        const { ESLint } = require("eslint");
+        const eslint = new ESLint();
+        const formatter = await eslint.loadFormatter("stylish");
+        stylish = formatter.format;
+    }
+
+    await processResults(results);
+    return stylish ? stylish(results) : 'no stylish';
 };
